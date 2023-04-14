@@ -1,6 +1,22 @@
 import * as THREE from 'three'
 //import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import gsap from 'gsap';
+import GUI from 'lil-gui'; 
+
+console.log(GUI);
+
+const parameters = {
+    spin: () => {  
+        gsap.to(mesh.rotation, { duration: 1, y: mesh.rotation.y + 10 })
+    } ,
+}
+
+/**
+ * Debug
+ */
+const gui = new GUI()
+
 
 /**
  * Base
@@ -14,23 +30,43 @@ const scene = new THREE.Scene()
 /**
  * Object
  */
-//const geometry = new THREE.BoxGeometry(1, 1, 1, 3, 3, 3)
+const geometry = new THREE.BoxGeometry(1, 1, 1, 3, 3, )
 
-const geometry = new THREE.BufferGeometry();
+// const geometry = new THREE.BufferGeometry();
 
-const count = 500;
-const positionsArray = new Float32Array(count * 3 * 3);
+// const count = 500;
+// const positionsArray = new Float32Array(count * 3 * 3);
 
-for(let i = 0; i < count * 3 * 3; i++) {
-    positionsArray[i] = (Math.random() - 0.5) * 4
-}
+// for(let i = 0; i < count * 3 * 3; i++) {
+//     positionsArray[i] = (Math.random() - 0.5) * 4
+// }
 
-const positionsAttribute = new THREE.BufferAttribute(positionsArray, 3)
-geometry.setAttribute('position', positionsAttribute)
+// const positionsAttribute = new THREE.BufferAttribute(positionsArray, 3)
+// geometry.setAttribute('position', positionsAttribute)
 
-const material = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true })
+const material = new THREE.MeshBasicMaterial({ color: 0xff0000})
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
+
+// Debug
+gui
+    .add(mesh.position, 'y')
+    .min(-3)
+    .max(3)
+    .step(0.01)
+    .name('elevation')
+
+gui
+    .add(mesh, 'visible')
+
+gui
+    .add(material, 'wireframe')
+
+gui
+    .addColor(material, 'color')
+
+gui
+    .add(parameters, 'spin')
 
 /**
  * Sizes
